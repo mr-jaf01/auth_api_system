@@ -19,28 +19,32 @@ Before starting, make sure you have the following software installed:
 First, clone the Laravel backend repository to your local machine.
 
 git clone https://github.com/mr-jaf01/auth_api_system.git
-cd auth_api_system 2. Install Backend Dependencies
-Install the necessary PHP dependencies using Composer.
+cd auth_api_system
 
-composer install 3. Set Up Environment File
-Copy the .env.example file to .env and set up your environment variables (such as database connection, app key, etc.).
+-   2. Install Backend Dependencies
+       Install the necessary PHP dependencies using Composer.
 
-cp .env.example .env 4. Generate Application Key
-Generate the Laravel application key.
+        composer install
 
-php artisan key:generate 5. Set Up Database
-Create a database in MySQL (or any other database you are using). Update the .env file with your database details:
+-   3. Set Up Environment File
+       Copy the .env.example file to .env and set up your environment variables (such as database connection, app key, etc.).
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database_name
-DB_USERNAME=your_database_username
-DB_PASSWORD=your_database_password 6. Run Migrations and Seeders (Optional)
-If your project has migrations and seeders, run the following command to set up the database schema and data:
+        cp .env.example .env
 
-php artisan migrate --seed 7. Serve the Laravel Application
-Start the Laravel server:
+-   4. Generate Application Key
+       Generate the Laravel application key.
+       php artisan key:generate
 
-php artisan serve
-The backend should now be running at http://127.0.0.1:8000.
+-   5. Set Up Database
+       The default DB is SQLite
+
+-   6. Run Migrations and Seeders
+       If your project has migrations and seeders, run the following command to set up the database schema and data:
+
+    php artisan migrate --seed 7. Serve the Laravel Application
+
+-   Start the Laravel server:
+
+    php artisan serve
+
+-   The backend should now be running at http://127.0.0.1:8000.
