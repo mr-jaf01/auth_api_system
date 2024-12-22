@@ -1,0 +1,54 @@
+name: "Deploying laravel App to production"
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+
+      - name: Install Composer dependencies
+        run: composer install --optimize-autoloader --no-dev --no-progress --no-interaction --no-suggest --prefer-dist
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "22"
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: NPM Bulding Assets
+        run: npm run build
+
+      - name: Sync files to server
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SOURCE: "."
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: "/var/www/html/apiapp.ng"
+
+      - name: Run Remote / Artisan Commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/html/apiapp.ng
+            php artisan migrate --force
+            php artisan optimize:clear
+            php artisan optimize
